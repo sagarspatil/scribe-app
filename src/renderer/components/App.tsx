@@ -263,33 +263,7 @@ const App: React.FC = () => {
           </Box>
         </Container>
         
-        {/* Connection Status */}
-        <Box 
-          component="footer"
-          sx={{ 
-            p: 2, 
-            borderTop: 1, 
-            borderColor: 'divider',
-            bgcolor: 'background.paper'
-          }}
-        >
-          <Container maxWidth="sm">
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Chip
-                label={apiKeyStatus ? "Connected" : "API Key Required"}
-                color={apiKeyStatus ? "success" : "error"}
-                size="small"
-                variant={apiKeyStatus ? "filled" : "outlined"}
-                sx={{
-                  color: apiKeyStatus ? '#fff' : undefined,
-                  '& .MuiChip-label': {
-                    fontWeight: apiKeyStatus ? 500 : undefined
-                  }
-                }}
-              />
-            </Box>
-          </Container>
-        </Box>
+
       </Box>
       
       {/* Modals */}

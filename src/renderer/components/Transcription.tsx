@@ -103,20 +103,24 @@ const Transcription: React.FC<TranscriptionProps> = ({
         </Box>
         
         <Button
-          variant="outlined"
-          color="secondary"
+          variant="contained"
+          color="primary"
           startIcon={<RefreshIcon />}
           onClick={onNewRecording}
+          sx={{
+            bgcolor: 'white',
+            color: 'primary.main',
+            '&:hover': {
+              bgcolor: 'rgba(98, 0, 238, 0.08)',
+            },
+            boxShadow: 'none'
+          }}
         >
-          New Recording
+          NEW RECORDING
         </Button>
       </CardActions>
       
-      <Box sx={{ p: 2, pt: 0, textAlign: 'center' }}>
-        <Typography variant="caption" color="text.secondary">
-          Transcribed using Eleven Labs API
-        </Typography>
-      </Box>
+
     </Card>
   );
 };
