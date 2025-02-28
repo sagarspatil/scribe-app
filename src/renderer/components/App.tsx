@@ -192,7 +192,7 @@ const App: React.FC = () => {
                       maxWidth: 400,
                       mx: 'auto'
                     }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, justifyContent: 'center' }}>
                         <NoteAddIcon color="primary" sx={{ mr: 1 }} />
                         <Typography variant="body1" fontWeight="medium">
                           Start a new transcription
@@ -272,10 +272,16 @@ const App: React.FC = () => {
           <Container maxWidth="sm">
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Chip
-                label={apiKeyStatus ? "Connected to API" : "API Key Required"}
+                label={apiKeyStatus ? "Connected" : "API Key Required"}
                 color={apiKeyStatus ? "success" : "error"}
                 size="small"
-                variant="outlined"
+                variant={apiKeyStatus ? "filled" : "outlined"}
+                sx={{
+                  color: apiKeyStatus ? '#fff' : undefined,
+                  '& .MuiChip-label': {
+                    fontWeight: apiKeyStatus ? 500 : undefined
+                  }
+                }}
               />
             </Box>
           </Container>
