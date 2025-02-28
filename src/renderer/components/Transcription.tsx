@@ -34,63 +34,57 @@ const Transcription: React.FC<TranscriptionProps> = ({
       elevation={0} 
       sx={{ 
         width: '100%', 
-        borderRadius: 2, 
+        maxWidth: 500,
+        mx: 'auto',
+        borderRadius: 4,
         bgcolor: 'background.paper',
-        border: '1px solid',
-        borderColor: 'divider'
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
       }}
     >
-      <CardContent>
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
-            Transcription
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-            <Chip 
-              label={`Language: ${transcription.language_code.toUpperCase()}`} 
-              size="small" 
-              color="primary" 
-              variant="outlined"
-            />
-            <Chip 
-              label={`Confidence: ${Math.round(transcription.language_probability * 100)}%`} 
-              size="small" 
-              color="primary" 
-              variant="outlined"
-            />
-          </Box>
+      <CardContent sx={{ p: 4 }}>
+        <Typography variant="h6" align="center" gutterBottom>
+          Transcription Results
+        </Typography>
+
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center', mb: 3 }}>
+          <Chip 
+            label={`Language: ${transcription.language_code.toUpperCase()}`} 
+            size="small" 
+            color="primary" 
+            variant="outlined"
+          />
+          <Chip 
+            label={`Confidence: ${Math.round(transcription.language_probability * 100)}%`} 
+            size="small" 
+            color="primary" 
+            variant="outlined"
+          />
         </Box>
-        
-        <Divider sx={{ my: 2 }} />
         
         <Paper 
           elevation={0} 
           sx={{ 
-            p: 2, 
-            backgroundColor: 'rgba(0, 0, 0, 0.02)', 
-            borderRadius: 1,
+            p: 3,
+            backgroundColor: 'rgba(98, 0, 238, 0.05)',
+            borderRadius: 2,
             maxHeight: '50vh',
-            overflow: 'auto'
+            overflow: 'auto',
+            mb: 3
           }}
         >
           <Typography variant="body1" component="div" sx={{ whiteSpace: 'pre-wrap' }}>
             {transcription.text}
           </Typography>
         </Paper>
-      </CardContent>
-      
-      <Divider />
-      
-      <CardActions sx={{ justifyContent: 'space-between', p: 2 }}>
-        <Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
           <Button
             variant="contained"
             color="primary"
             startIcon={<SaveIcon />}
             onClick={onSave}
-            sx={{ mr: 1 }}
           >
-            Save
+            SAVE
           </Button>
           <Button
             variant="outlined"
@@ -98,29 +92,27 @@ const Transcription: React.FC<TranscriptionProps> = ({
             startIcon={<CopyIcon />}
             onClick={handleCopyToClipboard}
           >
-            Copy
+            COPY
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<RefreshIcon />}
+            onClick={onNewRecording}
+            sx={{
+              bgcolor: 'white',
+              color: 'primary.main',
+              '&:hover': {
+                bgcolor: 'rgba(98, 0, 238, 0.08)',
+              },
+              boxShadow: 'none'
+            }}
+          >
+            NEW
           </Button>
         </Box>
-        
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<RefreshIcon />}
-          onClick={onNewRecording}
-          sx={{
-            bgcolor: 'white',
-            color: 'primary.main',
-            '&:hover': {
-              bgcolor: 'rgba(98, 0, 238, 0.08)',
-            },
-            boxShadow: 'none'
-          }}
-        >
-          NEW RECORDING
-        </Button>
-      </CardActions>
+      </CardContent>
       
-
     </Card>
   );
 };

@@ -6,7 +6,8 @@ import elevenlabsService, { TranscriptionResponse } from '../services/elevenlabs
 import { 
   MicrophoneIcon, 
   SettingsIcon,
-  NoteAddIcon
+  NoteAddIcon,
+  RecordIcon
 } from './icons';
 import { 
   Container, 
@@ -134,9 +135,12 @@ const App: React.FC = () => {
       }}>
         <AppBar position="static" elevation={0} color="transparent">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Scribe
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+              <RecordIcon sx={{ fontSize: 28, color: 'primary.main', mr: 1 }} />
+              <Typography variant="h6" component="div">
+                Scribe
+              </Typography>
+            </Box>
             <IconButton 
               edge="end" 
               color="primary" 
@@ -161,12 +165,6 @@ const App: React.FC = () => {
             {!isRecordingModalOpen && !isLoading && !transcription && (
               <Fade in={true}>
                 <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="h1" component="h1" gutterBottom>
-                    Scribe
-                  </Typography>
-                  <Typography variant="subtitle1" gutterBottom sx={{ mb: 6 }}>
-                    Record your voice and get an instant transcription
-                  </Typography>
                   
                   <Box sx={{ '& > :not(style)': { m: 1 } }}>
                     <Fab
