@@ -192,7 +192,7 @@ const RecordingModal: React.FC<RecordingModalProps> = ({ isOpen, onClose, onComp
           borderRadius: 3
         }}>
           <Typography variant="h6" gutterBottom align="center" sx={{ fontWeight: 500 }}>
-            Recording in Progress
+            {isPaused ? 'Recording Paused' : 'Recording in Progress'}
           </Typography>
           
           {/* Timer display */}
