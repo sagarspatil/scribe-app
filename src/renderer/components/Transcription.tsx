@@ -10,9 +10,10 @@ import {
   Card,
   CardContent,
   CardActions,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material';
-import { SaveIcon, CopyIcon, RefreshIcon } from './icons';
+import { SaveIcon, CopyIcon, RefreshIcon, DownloadIcon } from './icons';
 
 interface TranscriptionProps {
   transcription: TranscriptionResponse;
@@ -27,6 +28,11 @@ const Transcription: React.FC<TranscriptionProps> = ({
 }) => {
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(transcription.text);
+  };
+
+  const handleDownloadAudio = () => {
+    // This would need implementation to download the audio file
+    console.log('Download audio functionality to be implemented');
   };
   
   return (
@@ -77,7 +83,8 @@ const Transcription: React.FC<TranscriptionProps> = ({
           </Typography>
         </Paper>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+        {/* First row of buttons: SAVE, COPY, AUDIO */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 2 }}>
           <Button
             variant="contained"
             color="primary"
@@ -95,18 +102,22 @@ const Transcription: React.FC<TranscriptionProps> = ({
             COPY
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
+            color="primary"
+            startIcon={<DownloadIcon />}
+            onClick={handleDownloadAudio}
+          >
+            AUDIO
+          </Button>
+        </Box>
+
+        {/* Second row with NEW button */}
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            variant="outlined"
             color="primary"
             startIcon={<RefreshIcon />}
             onClick={onNewRecording}
-            sx={{
-              bgcolor: 'white',
-              color: 'primary.main',
-              '&:hover': {
-                bgcolor: 'rgba(98, 0, 238, 0.08)',
-              },
-              boxShadow: 'none'
-            }}
           >
             NEW
           </Button>

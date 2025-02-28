@@ -14,6 +14,7 @@ export { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
 export { Refresh as RefreshIcon } from '@mui/icons-material';
 export { Pause as PauseIcon } from '@mui/icons-material';
 export { PlayArrow as PlayArrowIcon } from '@mui/icons-material';
+export { Download as DownloadIcon } from '@mui/icons-material';
 
 // Custom RecordIcon using the SVG path from Record.svg
 export const RecordIcon: React.FC<SvgIconProps> = (props) => (
