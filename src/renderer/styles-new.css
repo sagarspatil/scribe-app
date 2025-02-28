@@ -1,0 +1,255 @@
+/* Modern Apple-like UI Styles for Scribe App */
+
+:root {
+  /* Color Variables - Apple-inspired */
+  --primary: #007AFF; /* iOS blue */
+  --primary-light: #5AC8FA;
+  --primary-dark: #0062CC;
+  --accent: #30D158; /* iOS green */
+  --accent-light: #4DE38A;
+  --accent-dark: #248A3D;
+  --text-primary: #000000; /* Black text */
+  --text-secondary: #86868B; /* Apple secondary text */
+  --bg-primary: #FFFFFF; /* White */
+  --bg-secondary: #F5F5F7; /* Light gray background - Apple website color */
+  --bg-tertiary: #E5E5EA; /* iOS light gray */
+  --error: #FF3B30; /* iOS red */
+  --success: #34C759; /* iOS green */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --transition-normal: 150ms ease;
+  --transition-slow: 300ms ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* App Container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* App Header */
+.header {
+  text-align: center;
+  padding: 2.5rem 0 1.5rem;
+  position: relative;
+}
+
+.app-logo {
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px; /* Apple's tight letter spacing */
+}
+
+.app-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* Settings Icon */
+.settings-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-normal);
+}
+
+.settings-button:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--primary);
+}
+
+.settings-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Main Content */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* Record Button */
+.record-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.record-button {
+  width: 84px;
+  height: 84px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.record-button:hover {
+  background-color: var(--primary-light);
+  transform: scale(1.03);
+  box-shadow: var(--shadow-lg);
+}
+
+.record-button:active {
+  transform: scale(0.98);
+}
+
+.record-button svg {
+  width: 34px;
+  height: 34px;
+  fill: white;
+}
+
+.record-label {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+}
+
+/* API Status */
+.api-status {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.api-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--success);
+}
+
+.api-status-dot.disconnected {
+  background-color: var(--error);
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bg-tertiary);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-container {
+  background-color: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--error);
+  margin: 1rem 0;
+  max-width: 500px;
+}
+
+.error {
+  color: var(--error);
+  margin-bottom: 0.5rem;
+}
+
+.error-dismiss {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.error-dismiss:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+/* For screens implementation later */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
