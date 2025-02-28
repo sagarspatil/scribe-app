@@ -9,6 +9,7 @@ export default class AudioRecorder {
   private audioContext: AudioContext | null = null;
   private analyser: AnalyserNode | null = null;
   private processorNode: ScriptProcessorNode | null = null;
+  private isPaused: boolean = false;
 
   constructor(
     onStateChange: (recording: boolean) => void,
@@ -23,6 +24,7 @@ export default class AudioRecorder {
       this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       this.mediaRecorder = new MediaRecorder(this.stream);
       this.audioChunks = [];
+      this.isPaused = false;
 
       this.mediaRecorder.addEventListener('dataavailable', (event) => {
         this.audioChunks.push(event.data);
@@ -73,6 +75,57 @@ export default class AudioRecorder {
     });
   }
 
+  public pause(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!this.mediaRecorder || this.isPaused) {
+          reject(new Error('Cannot pause recording'));
+          return;
+        }
+
+        // MediaRecorder doesn't have a native pause method in all browsers
+        // So we'll implement our own pause by stopping the media tracks
+        if (this.stream) {
+          this.stream.getTracks().forEach(track => {
+            track.enabled = false;
+          });
+          
+          this.isPaused = true;
+          resolve();
+        } else {
+          reject(new Error('No active stream to pause'));
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public resume(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!this.mediaRecorder || !this.isPaused) {
+          reject(new Error('Cannot resume recording'));
+          return;
+        }
+
+        // Re-enable the tracks to resume
+        if (this.stream) {
+          this.stream.getTracks().forEach(track => {
+            track.enabled = true;
+          });
+          
+          this.isPaused = false;
+          resolve();
+        } else {
+          reject(new Error('No active stream to resume'));
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   public cancel(): void {
     if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
       this.mediaRecorder.stop();
@@ -97,9 +150,15 @@ export default class AudioRecorder {
     this.processorNode.connect(this.audioContext.destination);
     
     this.processorNode.addEventListener('audioprocess', () => {
-      const dataArray = new Float32Array(this.analyser!.frequencyBinCount);
-      this.analyser!.getFloatTimeDomainData(dataArray);
-      this.onAudioProcess(dataArray);
+      if (this.isPaused) {
+        // When paused, send a flat line
+        const flatData = new Float32Array(this.analyser!.frequencyBinCount);
+        this.onAudioProcess(flatData);
+      } else {
+        const dataArray = new Float32Array(this.analyser!.frequencyBinCount);
+        this.analyser!.getFloatTimeDomainData(dataArray);
+        this.onAudioProcess(dataArray);
+      }
     });
   }
 

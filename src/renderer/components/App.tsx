@@ -68,6 +68,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKeyStatus, setApiKeyStatus] = useState<boolean>(false);
+  const [currentApiKey, setCurrentApiKey] = useState<string>('');
 
   // Check if API key exists on component mount
   useEffect(() => {
@@ -76,8 +77,10 @@ const App: React.FC = () => {
       if (!apiKey) {
         setIsApiKeyModalOpen(true);
         setApiKeyStatus(false);
+        setCurrentApiKey('');
       } else {
         setApiKeyStatus(true);
+        setCurrentApiKey(apiKey);
       }
     };
     
@@ -114,6 +117,7 @@ const App: React.FC = () => {
     elevenlabsService.saveApiKey(apiKey);
     setIsApiKeyModalOpen(false);
     setApiKeyStatus(true);
+    setCurrentApiKey(apiKey);
   };
 
   const openSettings = () => {
@@ -299,9 +303,10 @@ const App: React.FC = () => {
       
       {isApiKeyModalOpen && (
         <ApiKeyModal 
-          isOpen={isApiKeyModalOpen}
+          isOpen={isApiKeyModalOpen} 
           onClose={() => setIsApiKeyModalOpen(false)}
           onSave={handleApiKeySave}
+          currentApiKey={currentApiKey}
         />
       )}
     </ThemeProvider>

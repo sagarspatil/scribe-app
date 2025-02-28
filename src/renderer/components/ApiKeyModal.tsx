@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Dialog, 
   DialogTitle, 
@@ -8,23 +8,51 @@ import {
   TextField,
   Typography,
   Link,
-  Box
+  Box,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface ApiKeyModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (apiKey: string) => void;
+  currentApiKey?: string;
 }
 
-const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose, onSave }) => {
+const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onSave, 
+  currentApiKey = '' 
+}) => {
   const [apiKey, setApiKey] = useState<string>('');
+  const [showMaskedKey, setShowMaskedKey] = useState<boolean>(false);
+  
+  useEffect(() => {
+    // If we have a currentApiKey, set it in the state
+    if (currentApiKey) {
+      setApiKey(currentApiKey);
+    } else {
+      setApiKey('');
+    }
+  }, [currentApiKey, isOpen]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (apiKey.trim()) {
       onSave(apiKey.trim());
     }
+  };
+  
+  // Create a masked version of the API key (first 4 chars visible, rest masked)
+  const getMaskedApiKey = (): string => {
+    if (!currentApiKey) return '';
+    
+    const visiblePart = currentApiKey.slice(0, 4);
+    const maskedPart = '*'.repeat(Math.max(currentApiKey.length - 4, 8));
+    return visiblePart + maskedPart;
   };
   
   if (!isOpen) return null;
@@ -64,29 +92,46 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose, onSave }) =>
             margin="dense"
             id="apiKey"
             label="API Key"
-            type="text"
+            type={showMaskedKey ? "text" : "password"}
             fullWidth
             variant="outlined"
-            value={apiKey}
+            value={currentApiKey && !apiKey.startsWith(currentApiKey.slice(0, 4)) ? getMaskedApiKey() : apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="Enter your Eleven Labs API key"
             required
-            sx={{ mb: 2 }}
+            InputProps={{
+              endAdornment: currentApiKey && (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle API key visibility"
+                    onClick={() => setShowMaskedKey(!showMaskedKey)}
+                    edge="end"
+                  >
+                    {showMaskedKey ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
           />
         </Box>
       </DialogContent>
       
       <DialogActions sx={{ px: 3, pb: 3 }}>
-        <Button onClick={onClose} variant="outlined">
-          Cancel
+        <Button 
+          onClick={onClose}
+          variant="outlined"
+          sx={{ borderRadius: 6, px: 3 }}
+        >
+          CANCEL
         </Button>
         <Button 
-          type="submit" 
-          variant="contained" 
-          disabled={!apiKey.trim()}
+          onClick={handleSubmit}
+          variant="contained"
           color="primary"
+          disableElevation
+          sx={{ borderRadius: 6, px: 3 }}
         >
-          Save
+          SAVE
         </Button>
       </DialogActions>
     </Dialog>

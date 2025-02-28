@@ -11,3 +11,5 @@ export { NoteAdd as NoteAddIcon } from '@mui/icons-material';
 export { Create as CreateIcon } from '@mui/icons-material';
 export { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
 export { Refresh as RefreshIcon } from '@mui/icons-material';
+export { Pause as PauseIcon } from '@mui/icons-material';
+export { PlayArrow as PlayArrowIcon } from '@mui/icons-material';
