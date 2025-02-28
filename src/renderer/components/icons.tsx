@@ -1,26 +1,31 @@
 import React from 'react';
 
-// Import SVG files directly
-// @ts-ignore
-import MicrophoneSvg from './icons/Microphone.svg';
-// @ts-ignore
-import MicrophoneOffSvg from './icons/Microphone Off.svg';
-// @ts-ignore
-import SettingsSvg from './icons/Settings Adjust vr-al.svg';
-
 // Modern iOS-style microphone icon for record button
 export const MicrophoneIcon: React.FC = () => (
-  <img src={MicrophoneSvg} alt="Microphone" width="24" height="24" />
-);
-
-// Mute microphone icon
-export const MicrophoneOffIcon: React.FC = () => (
-  <img src={MicrophoneOffSvg} alt="Microphone Off" width="24" height="24" />
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    width="24" 
+    height="24"
+  >
+    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+  </svg>
 );
 
 // Modern iOS-style settings icon - clean minimal gear
 export const SettingsIcon: React.FC = () => (
-  <img src={SettingsSvg} alt="Settings" width="24" height="24" />
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="currentColor"
+    width="24" 
+    height="24"
+  >
+    <path d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L5.03 5.196c-.84-.3-1.77.03-2.188.8l-.527.913c-.418.772-.19 1.717.51 2.24l1.13.837c.09.07.151.234.151.36a7.051 7.051 0 010 1.31c0 .126-.06.29-.15.36l-1.131.839c-.7.522-.928 1.468-.51 2.238l.528.914c.418.772 1.348 1.1 2.186.8l2.286-.694c.117-.043.285-.032.45.082.312.214.641.405.986.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.056c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.165-.114.334-.125.45-.082l2.286.694c.84.299 1.77-.03 2.187-.8l.528-.914c.418-.77.197-1.716-.51-2.238l-1.13-.839c-.09-.07-.15-.234-.15-.36a7.051 7.051 0 010-1.31c0-.126.06-.29.15-.36l1.13-.837c.708-.522.929-1.468.51-2.24l-.527-.913c-.418-.77-1.348-1.1-2.187-.8l-2.286.694c-.117.043-.284.033-.45-.083a7.488 7.488 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072c-.15-.904-.933-1.567-1.85-1.567h-1.055z" />
+    <path d="M12 14a2 2 0 100-4 2 2 0 000 4z" />
+  </svg>
 );
 
 // Stop icon for recording control

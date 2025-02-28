@@ -130,34 +130,38 @@ body, html {
 }
 
 .record-button {
-  width: 84px;
-  height: 84px;
-  background-color: var(--primary);
-  color: white;
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  color: var(--text-primary);
   border: none;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal);
-  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal), color var(--transition-normal);
+  box-shadow: none;
+}
+
+.record-button svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--text-primary);
 }
 
 .record-button:hover {
-  background-color: var(--primary-light);
+  background-color: rgba(0, 0, 0, 0.05);
   transform: scale(1.03);
-  box-shadow: var(--shadow-lg);
+  color: var(--primary);
+}
+
+.record-button:hover svg {
+  fill: var(--primary);
 }
 
 .record-button:active {
   transform: scale(0.98);
-}
-
-.record-button svg {
-  width: 34px;
-  height: 34px;
-  fill: white;
 }
 
 .record-label {

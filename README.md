@@ -60,6 +60,16 @@ npm run package
 
 This will create a `.dmg` file in the `dist` directory.
 
+## UI Update (February 2025)
+
+The application now features a modern Apple-like UI with:
+
+- Clean, minimal design following Apple's design language
+- iOS-style color scheme with blue accents
+- SVG icons inspired by SF Symbols
+- Responsive layout with subtle animations
+- Improved user experience
+
 ## Keyboard Shortcuts
 
 - **Space**: Start/Stop recording
