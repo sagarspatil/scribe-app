@@ -1,6 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AudioRecorder from '../services/audioRecorder';
 import Waveform from './Waveform';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  IconButton, 
+  Dialog, 
+  DialogContent, 
+  DialogActions,
+  Paper,
+  Fade,
+  Chip
+} from '@mui/material';
+import { StopIcon, MicrophoneOffIcon } from './icons';
 
 interface RecordingModalProps {
   isOpen: boolean;
@@ -81,39 +94,124 @@ const RecordingModal: React.FC<RecordingModalProps> = ({ isOpen, onClose, onComp
   if (!isOpen) return null;
   
   return (
-    <div className="recording-modal">
-      <div className="visualization-container">
-        {isRecording && audioData ? (
-          <Waveform audioData={audioData} />
-        ) : (
-          <div className="dotted-line" />
-        )}
-        
-        <div style={{ position: 'absolute', left: '10px', display: 'flex', alignItems: 'center' }}>
-          <div className="recording-indicator" style={{ opacity: isRecording ? 1 : 0.3 }} />
-          <div className="alert-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#666">
-              <path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-7h2v5h-2z" />
-            </svg>
-          </div>
-        </div>
-      </div>
+    <Dialog 
+      open={isOpen}
+      onClose={handleCancelRecording}
+      fullWidth
+      maxWidth="sm"
+      PaperProps={{
+        elevation: 2,
+        sx: { borderRadius: 2 }
+      }}
+    >
+      <DialogContent sx={{ p: 0 }}>
+        <Box sx={{ 
+          backgroundColor: 'background.default',
+          p: 3,
+          minHeight: '200px',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
+          <Typography variant="h6" gutterBottom align="center">
+            Recording in Progress
+          </Typography>
+          
+          <Box sx={{ 
+            width: '100%', 
+            height: '120px', 
+            my: 3,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative'
+          }}>
+            {isRecording && audioData ? (
+              <Waveform audioData={audioData} />
+            ) : (
+              <Box sx={{ 
+                width: '100%', 
+                height: '2px', 
+                borderTop: '2px dashed',
+                borderColor: 'divider'
+              }} />
+            )}
+            
+            <Box sx={{ 
+              position: 'absolute', 
+              left: '16px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1 
+            }}>
+              <Box 
+                sx={{ 
+                  width: 12, 
+                  height: 12, 
+                  borderRadius: '50%', 
+                  bgcolor: isRecording ? 'error.main' : 'grey.400',
+                  animation: isRecording ? 'pulse 1.5s infinite' : 'none',
+                  '@keyframes pulse': {
+                    '0%': { opacity: 1 },
+                    '50%': { opacity: 0.4 },
+                    '100%': { opacity: 1 }
+                  }
+                }}
+              />
+              {isRecording && (
+                <Chip 
+                  label="RECORDING" 
+                  color="error" 
+                  size="small" 
+                  variant="outlined"
+                />
+              )}
+            </Box>
+          </Box>
+          
+          <Box sx={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            justifyContent: 'center', 
+            gap: 2,
+            width: '100%'
+          }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleStopRecording}
+              startIcon={<StopIcon />}
+            >
+              Stop Recording
+            </Button>
+            
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleCancelRecording}
+              startIcon={<MicrophoneOffIcon />}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </DialogContent>
       
-      <div className="controls">
-        <button className="control-button" onClick={handleStopRecording}>
-          Stop
-        </button>
-        <button className="control-button">
-          ⌥Space
-        </button>
-        <button className="control-button" onClick={handleCancelRecording}>
-          Cancel
-        </button>
-        <button className="control-button">
-          Esc
-        </button>
-      </div>
-    </div>
+      <DialogActions sx={{ 
+        justifyContent: 'center', 
+        pb: 2, 
+        px: 2, 
+        backgroundColor: 'background.paper'
+      }}>
+        <Box sx={{ textAlign: 'center', width: '100%' }}>
+          <Typography variant="caption" color="text.secondary">
+            Press <Box component="span" sx={{ fontFamily: 'monospace', bgcolor: 'action.hover', px: 1, borderRadius: 1 }}>Space</Box> to stop recording, 
+            <Box component="span" sx={{ fontFamily: 'monospace', bgcolor: 'action.hover', px: 1, borderRadius: 1, ml: 1 }}>Esc</Box> to cancel
+          </Typography>
+        </Box>
+      </DialogActions>
+    </Dialog>
   );
 };
 

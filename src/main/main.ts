@@ -2,6 +2,19 @@ import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
+// Enable hot reload in development
+try {
+  if (process.env.NODE_ENV !== 'production') {
+    require('electron-reloader')(module, {
+      debug: true,
+      watchRenderer: true
+    });
+    console.log('Hot reload enabled ');
+  }
+} catch (err) {
+  console.error('Error setting up hot reload:', err);
+}
+
 // Define a type for our store
 interface StoreSchema {
   apiKey: string;
@@ -34,30 +47,24 @@ async function initStore() {
 }
 
 function createWindow() {
-  // Create the browser window
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    minWidth: 600,
-    minHeight: 400,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: false
     }
   });
 
-  // Load the index.html of the app
+  // Load from webpack dev server in development, or from local file in production
+  const startUrl = process.env.ELECTRON_START_URL || `file://${path.join(__dirname, '../index.html')}`;
+  mainWindow.loadURL(startUrl);
+
+  // Open DevTools automatically in development
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:8080');
-    // Open the DevTools in development mode
     mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadFile(
-      path.join(__dirname, '../../dist/index.html')
-    );
   }
 
-  // Emitted when the window is closed
   mainWindow.on('closed', () => {
     mainWindow = null;
   });

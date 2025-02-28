@@ -1,71 +1,13 @@
 import React from 'react';
 
-// Modern iOS-style microphone icon for record button
-export const MicrophoneIcon: React.FC = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    width="24" 
-    height="24"
-  >
-    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
-    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-  </svg>
-);
-
-// Modern iOS-style settings icon - clean minimal gear
-export const SettingsIcon: React.FC = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="currentColor"
-    width="24" 
-    height="24"
-  >
-    <path d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L5.03 5.196c-.84-.3-1.77.03-2.188.8l-.527.913c-.418.772-.19 1.717.51 2.24l1.13.837c.09.07.151.234.151.36a7.051 7.051 0 010 1.31c0 .126-.06.29-.15.36l-1.131.839c-.7.522-.928 1.468-.51 2.238l.528.914c.418.772 1.348 1.1 2.186.8l2.286-.694c.117-.043.285-.032.45.082.312.214.641.405.986.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.056c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.165-.114.334-.125.45-.082l2.286.694c.84.299 1.77-.03 2.187-.8l.528-.914c.418-.77.197-1.716-.51-2.238l-1.13-.839c-.09-.07-.15-.234-.15-.36a7.051 7.051 0 010-1.31c0-.126.06-.29.15-.36l1.13-.837c.708-.522.929-1.468.51-2.24l-.527-.913c-.418-.77-1.348-1.1-2.187-.8l-2.286.694c-.117.043-.284.033-.45-.083a7.488 7.488 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072c-.15-.904-.933-1.567-1.85-1.567h-1.055z" />
-    <path d="M12 14a2 2 0 100-4 2 2 0 000 4z" />
-  </svg>
-);
-
-// Stop icon for recording control
-export const StopIcon: React.FC = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    width="24" 
-    height="24"
-  >
-    <path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" />
-  </svg>
-);
-
-// Save icon for saving transcription
-export const SaveIcon: React.FC = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    width="24" 
-    height="24"
-  >
-    <path fillRule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zM9.75 14.25a.75.75 0 000 1.5H15a.75.75 0 000-1.5H9.75z" clipRule="evenodd" />
-    <path d="M3.75 5.25c0-.966.784-1.75 1.75-1.75h.727a.75.75 0 010 1.5H5.5a.25.25 0 00-.25.25v10.5a.25.25 0 00.25.25h10.5a.25.25 0 00.25-.25v-.727a.75.75 0 011.5 0v.727A1.75 1.75 0 0116 18.25H5.5a1.75 1.75 0 01-1.75-1.75V5.25z" />
-  </svg>
-);
-
-// Copy icon for copying transcription
-export const CopyIcon: React.FC = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    width="24" 
-    height="24"
-  >
-    <path fillRule="evenodd" d="M17.663 3.118c.225.015.45.032.673.05C19.876 3.298 21 4.604 21 6.109v9.642a3 3 0 01-3 3V16.5c0-5.922-4.576-10.775-10.384-11.217.324-1.132 1.3-2.01 2.548-2.114.224-.019.448-.036.673-.051A3 3 0 0113.5 1.5H15a3 3 0 012.663 1.618zM12 4.5A1.5 1.5 0 0113.5 3H15a1.5 1.5 0 011.5 1.5H12z" clipRule="evenodd" />
-    <path d="M3 8.625c0-1.036.84-1.875 1.875-1.875h.375A3.75 3.75 0 019 10.5v1.875c0 1.036.84 1.875 1.875 1.875h1.875A3.75 3.75 0 0116.5 18v2.625c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625v-12z" />
-    <path d="M10.5 10.5a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963 5.23 5.23 0 00-3.434-1.279h-1.875a.375.375 0 01-.375-.375V10.5z" />
-  </svg>
-);
+// Re-export Material icons that we need
+export { Mic as MicrophoneIcon } from '@mui/icons-material';
+export { MicOff as MicrophoneOffIcon } from '@mui/icons-material';
+export { Stop as StopIcon } from '@mui/icons-material';
+export { Save as SaveIcon } from '@mui/icons-material';
+export { ContentCopy as CopyIcon } from '@mui/icons-material';
+export { Settings as SettingsIcon } from '@mui/icons-material';
+export { NoteAdd as NoteAddIcon } from '@mui/icons-material';
+export { Create as CreateIcon } from '@mui/icons-material';
+export { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
+export { Refresh as RefreshIcon } from '@mui/icons-material';

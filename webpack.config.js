@@ -6,6 +6,14 @@ module.exports = {
   entry: './src/renderer/index.tsx',
   target: 'electron-renderer',
   devtool: 'source-map',
+  devServer: {
+    hot: true,
+    static: {
+      directory: path.join(__dirname, 'dist')
+    },
+    port: 9000,
+    watchFiles: ['src/**/*.css', 'src/**/*.tsx', 'src/**/*.ts']
+  },
   module: {
     rules: [
       {

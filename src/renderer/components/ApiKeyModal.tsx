@@ -1,4 +1,15 @@
 import React, { useState } from 'react';
+import { 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions, 
+  Button,
+  TextField,
+  Typography,
+  Link,
+  Box
+} from '@mui/material';
 
 interface ApiKeyModalProps {
   isOpen: boolean;
@@ -19,45 +30,66 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose, onSave }) =>
   if (!isOpen) return null;
   
   return (
-    <div className="api-key-modal">
-      <div className="api-key-modal-content">
-        <h2>Enter Eleven Labs API Key</h2>
-        <p>
+    <Dialog 
+      open={isOpen} 
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      PaperProps={{
+        elevation: 2,
+        sx: { borderRadius: 2 }
+      }}
+    >
+      <DialogTitle sx={{ pb: 1 }}>
+        Enter Eleven Labs API Key
+      </DialogTitle>
+      
+      <DialogContent sx={{ pb: 3 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
           An API key is required to use the transcription service.
           You can get your API key from the{' '}
-          <a 
+          <Link 
             href="https://elevenlabs.io/app" 
             target="_blank" 
             rel="noopener noreferrer"
+            underline="hover"
           >
             Eleven Labs dashboard
-          </a>.
-        </p>
+          </Link>.
+        </Typography>
         
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="apiKey">API Key:</label>
-            <input
-              type="text"
-              id="apiKey"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Enter your Eleven Labs API key"
-              required
-            />
-          </div>
-          
-          <div className="form-actions">
-            <button type="button" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" disabled={!apiKey.trim()}>
-              Save
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="apiKey"
+            label="API Key"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            placeholder="Enter your Eleven Labs API key"
+            required
+            sx={{ mb: 2 }}
+          />
+        </Box>
+      </DialogContent>
+      
+      <DialogActions sx={{ px: 3, pb: 3 }}>
+        <Button onClick={onClose} variant="outlined">
+          Cancel
+        </Button>
+        <Button 
+          type="submit" 
+          variant="contained" 
+          disabled={!apiKey.trim()}
+          color="primary"
+        >
+          Save
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

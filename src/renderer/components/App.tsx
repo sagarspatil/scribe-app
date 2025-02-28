@@ -3,8 +3,63 @@ import RecordingModal from './RecordingModal';
 import Transcription from './Transcription';
 import ApiKeyModal from './ApiKeyModal';
 import elevenlabsService, { TranscriptionResponse } from '../services/elevenlabsService';
-import { MicrophoneIcon, SettingsIcon } from './icons';
+import { 
+  MicrophoneIcon, 
+  SettingsIcon,
+  NoteAddIcon
+} from './icons';
+import { 
+  Container, 
+  Typography, 
+  Box, 
+  Paper, 
+  IconButton, 
+  Fab,
+  Fade,
+  AppBar,
+  Toolbar,
+  CircularProgress,
+  Divider,
+  Chip
+} from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 const { ipcRenderer } = window.require('electron');
+
+// Create a theme instance with Material Design
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#6200ee', // Material Design primary color
+    },
+    secondary: {
+      main: '#03dac6', // Material Design secondary color
+    },
+    error: {
+      main: '#b00020', // Material Design error color
+    },
+    background: {
+      default: '#f5f5f5',
+      paper: '#ffffff',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 500,
+    },
+    h6: {
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontSize: '1rem',
+      color: 'rgba(0, 0, 0, 0.6)',
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
 
 const App: React.FC = () => {
   const [isRecordingModalOpen, setIsRecordingModalOpen] = useState<boolean>(false);
@@ -66,75 +121,184 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="app-container">
-      {/* Header with App Title and Settings */}
-      <div className="header">
-        <h1 className="app-logo">Scribe</h1>
-        <p className="app-subtitle">Record your voice and get an instant transcription</p>
-        <button className="settings-button" onClick={openSettings}>
-          <SettingsIcon />
-        </button>
-      </div>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        height: '100vh',
+        bgcolor: 'background.default'
+      }}>
+        <AppBar position="static" elevation={0} color="transparent">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Scribe
+            </Typography>
+            <IconButton 
+              edge="end" 
+              color="primary" 
+              aria-label="settings"
+              onClick={openSettings}
+            >
+              <SettingsIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+
+        <Container maxWidth="sm" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', py: 4 }}>
+          <Box sx={{ 
+            flexGrow: 1, 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            
+            {/* Home Screen */}
+            {!isRecordingModalOpen && !isLoading && !transcription && (
+              <Fade in={true}>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h1" component="h1" gutterBottom>
+                    Scribe
+                  </Typography>
+                  <Typography variant="subtitle1" gutterBottom sx={{ mb: 6 }}>
+                    Record your voice and get an instant transcription
+                  </Typography>
+                  
+                  <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                    <Fab
+                      color="primary"
+                      aria-label="record"
+                      size="large"
+                      onClick={handleStartRecording}
+                      sx={{ 
+                        width: 80, 
+                        height: 80,
+                        boxShadow: '0 8px 16px rgba(98, 0, 238, 0.2)'
+                      }}
+                    >
+                      <MicrophoneIcon fontSize="large" />
+                    </Fab>
+                  </Box>
+                  
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                    Tap to start recording
+                  </Typography>
+                  
+                  <Box sx={{ mt: 6 }}>
+                    <Paper elevation={0} sx={{ 
+                      p: 3, 
+                      borderRadius: 2, 
+                      bgcolor: 'rgba(98, 0, 238, 0.05)',
+                      maxWidth: 400,
+                      mx: 'auto'
+                    }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <NoteAddIcon color="primary" sx={{ mr: 1 }} />
+                        <Typography variant="body1" fontWeight="medium">
+                          Start a new transcription
+                        </Typography>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary">
+                        Record your voice, meetings, or any audio to get an accurate transcription powered by Eleven Labs.
+                      </Typography>
+                    </Paper>
+                  </Box>
+                </Box>
+              </Fade>
+            )}
+            
+            {/* Loading State */}
+            {isLoading && (
+              <Box sx={{ textAlign: 'center' }}>
+                <CircularProgress size={60} thickness={4} />
+                <Typography variant="body1" sx={{ mt: 2 }}>
+                  Transcribing your audio...
+                </Typography>
+              </Box>
+            )}
+            
+            {/* Error State */}
+            {error && (
+              <Paper 
+                elevation={0} 
+                sx={{ 
+                  p: 3, 
+                  bgcolor: 'rgba(176, 0, 32, 0.05)', 
+                  borderRadius: 2,
+                  maxWidth: 400,
+                  mx: 'auto'
+                }}
+              >
+                <Typography color="error" gutterBottom>
+                  {error}
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                  <Fab
+                    variant="extended"
+                    size="small"
+                    color="primary"
+                    onClick={() => setError(null)}
+                  >
+                    Dismiss
+                  </Fab>
+                </Box>
+              </Paper>
+            )}
+            
+            {/* Transcription Results */}
+            {transcription && (
+              <Transcription 
+                transcription={transcription} 
+                onSave={handleSaveTranscription}
+                onNewRecording={() => {
+                  setTranscription(null);
+                  setIsRecordingModalOpen(true);
+                }}
+              />
+            )}
+          </Box>
+        </Container>
+        
+        {/* Connection Status */}
+        <Box 
+          component="footer"
+          sx={{ 
+            p: 2, 
+            borderTop: 1, 
+            borderColor: 'divider',
+            bgcolor: 'background.paper'
+          }}
+        >
+          <Container maxWidth="sm">
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Chip
+                label={apiKeyStatus ? "Connected to API" : "API Key Required"}
+                color={apiKeyStatus ? "success" : "error"}
+                size="small"
+                variant="outlined"
+              />
+            </Box>
+          </Container>
+        </Box>
+      </Box>
       
-      <div className="content">
-        {/* Home Screen - Record Button */}
-        {!isRecordingModalOpen && !isLoading && !transcription && (
-          <div className="record-button-container">
-            <button className="record-button" onClick={handleStartRecording}>
-              <MicrophoneIcon />
-            </button>
-            <span className="record-label">Click to record</span>
-          </div>
-        )}
-        
-        {/* Loading State */}
-        {isLoading && (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p>Transcribing your audio...</p>
-          </div>
-        )}
-        
-        {/* Error State */}
-        {error && (
-          <div className="error-container">
-            <p className="error">{error}</p>
-            <button className="error-dismiss" onClick={() => setError(null)}>Dismiss</button>
-          </div>
-        )}
-        
-        {/* Transcription Results */}
-        {transcription && (
-          <Transcription 
-            transcription={transcription} 
-            onSave={handleSaveTranscription}
-            onNewRecording={() => {
-              setTranscription(null);
-              handleStartRecording();
-            }}
-          />
-        )}
-        
-        {/* Modals */}
+      {/* Modals */}
+      {isRecordingModalOpen && (
         <RecordingModal 
           isOpen={isRecordingModalOpen}
           onClose={() => setIsRecordingModalOpen(false)}
           onComplete={handleRecordingComplete}
         />
-        
-        <ApiKeyModal
+      )}
+      
+      {isApiKeyModalOpen && (
+        <ApiKeyModal 
           isOpen={isApiKeyModalOpen}
           onClose={() => setIsApiKeyModalOpen(false)}
           onSave={handleApiKeySave}
         />
-      </div>
-
-      {/* API Status Indicator */}
-      <div className="api-status">
-        <div className={`api-status-dot ${apiKeyStatus ? '' : 'disconnected'}`}></div>
-        <span>{apiKeyStatus ? 'Connected to Eleven Labs' : 'API Key Required'}</span>
-      </div>
-    </div>
+      )}
+    </ThemeProvider>
   );
 };
 
