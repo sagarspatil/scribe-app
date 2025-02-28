@@ -62,10 +62,14 @@ const theme = createTheme({
   },
 });
 
+interface TranscriptionType extends TranscriptionResponse {
+  audioPath?: string;
+}
+
 const App: React.FC = () => {
   const [isRecordingModalOpen, setIsRecordingModalOpen] = useState<boolean>(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState<boolean>(false);
-  const [transcription, setTranscription] = useState<TranscriptionResponse | null>(null);
+  const [transcription, setTranscription] = useState<TranscriptionType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKeyStatus, setApiKeyStatus] = useState<boolean>(false);
@@ -99,7 +103,7 @@ const App: React.FC = () => {
     
     try {
       const result = await elevenlabsService.transcribeAudio(audioPath);
-      setTranscription(result);
+      setTranscription({...result, audioPath});
     } catch (error) {
       console.error('Transcription error:', error);
       setError('Failed to transcribe audio. Please try again.');

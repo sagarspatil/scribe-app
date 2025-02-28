@@ -158,3 +158,24 @@ ipcMain.handle('save-transcription', async (_, text: string) => {
     return false;
   }
 });
+
+// Show save dialog for audio file
+ipcMain.handle('show-save-dialog', async (_, options) => {
+  try {
+    return await dialog.showSaveDialog(options);
+  } catch (error) {
+    console.error('Error showing save dialog:', error);
+    throw error;
+  }
+});
+
+// Copy audio file from temp to user-selected location
+ipcMain.handle('copy-audio-file', async (_, sourcePath: string, destinationPath: string) => {
+  try {
+    await fs.promises.copyFile(sourcePath, destinationPath);
+    return true;
+  } catch (error) {
+    console.error('Error copying audio file:', error);
+    throw error;
+  }
+});

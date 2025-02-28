@@ -15,8 +15,10 @@ import {
 } from '@mui/material';
 import { SaveIcon, CopyIcon, RefreshIcon, DownloadIcon } from './icons';
 
+const { ipcRenderer } = window.require('electron');
+
 interface TranscriptionProps {
-  transcription: TranscriptionResponse;
+  transcription: TranscriptionResponse & { audioPath?: string };
   onSave: () => void;
   onNewRecording: () => void;
 }
@@ -30,9 +32,26 @@ const Transcription: React.FC<TranscriptionProps> = ({
     navigator.clipboard.writeText(transcription.text);
   };
 
-  const handleDownloadAudio = () => {
-    // This would need implementation to download the audio file
-    console.log('Download audio functionality to be implemented');
+  const handleDownloadAudio = async () => {
+    if (!transcription.audioPath) {
+      console.error('Audio path not available');
+      return;
+    }
+
+    try {
+      const { filePath } = await ipcRenderer.invoke('show-save-dialog', {
+        title: 'Save Audio Recording',
+        defaultPath: 'recording.wav',
+        filters: [{ name: 'Audio Files', extensions: ['wav'] }]
+      });
+
+      if (filePath) {
+        await ipcRenderer.invoke('copy-audio-file', transcription.audioPath, filePath);
+        console.log('Audio saved successfully to:', filePath);
+      }
+    } catch (error) {
+      console.error('Failed to save audio:', error);
+    }
   };
   
   return (
